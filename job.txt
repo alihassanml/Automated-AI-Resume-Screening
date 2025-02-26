@@ -1,0 +1,34 @@
+Job Title: Data Scientist  
+Location: Remote / On-site (Karachi, Pakistan)  
+Company: TechNova Analytics  
+Job Type: Full-Time  
+---
+ About the Role:
+We’re looking for a passionate and analytical Data Scientist to join our growing analytics team. You will play a key role in transforming raw data into actionable insights to support business decision-making and strategy development.
+---
+ Requirements:
+Education:
+- Bachelor's degree (BS) in Computer Science, Data Science, Statistics, Mathematics, or a related field.
+Experience:
+- 2+ years of experience working in a data science or analytics role.
+Skills:
+- Proficiency in Python and SQL.
+- Experience with machine learning libraries such as Scikit-learn, TensorFlow, or PyTorch.
+- Strong knowledge of statistical analysis and data visualization tools (e.g., Tableau, Power BI, or Matplotlib).
+- Familiarity with cloud platforms (AWS, GCP, or Azure).
+- Experience with big data tools like Spark or Hadoop is a plus.
+- Solid understanding of data preprocessing and feature engineering.
+---
+ Key Responsibilities:
+- Analyze large datasets to discover trends and patterns.
+- Build predictive models and machine learning algorithms.
+- Collaborate with cross-functional teams to understand business objectives.
+- Develop data visualization dashboards to present insights.
+- Ensure data integrity and improve data collection strategies.
+---
+ Benefits:
+- Competitive salary
+- Flexible working hours
+- Health insurance
+- Learning and development opportunities
+- Annual performance bonuses
