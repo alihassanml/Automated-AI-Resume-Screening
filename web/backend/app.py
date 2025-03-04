@@ -11,11 +11,18 @@ import shutil
 import os   
 from PyPDF2 import PdfReader
 from predict import resume_result
+from flair.models import SequenceTagger
+from flair.data import Sentence
+import json
 
+import warnings
+warnings.filterwarnings('ignore')
 
 
 app = FastAPI()
 model.Base.metadata.create_all(bind=engine)
+tagger = SequenceTagger.load("ner")
+
 
 # adding Cors url
 origins = [
@@ -61,10 +68,20 @@ def delete_existing_files():
             print(f"Error deleting file {file_path}: {e}")
 
 
+def predict_name(text):
+    sentence = Sentence(text)
+    tagger.predict(sentence)
+    for entity in sentence.get_spans("ner"):
+        if entity.tag == "PER":  # PER = Person
+            return entity.text
+
+
+
 @app.post("/upload")
 async def upload(
     resume: UploadFile = File(...), 
-    job: UploadFile = File(...)  # Job file is optional
+    job: UploadFile = File(...),  # Job file is optional
+    db: Session = Depends(get_db)
 ):
     try:
         if not resume.filename.endswith(".pdf"):
@@ -89,9 +106,18 @@ async def upload(
         extracted_job = pdf_read(job_location)
 
         result = resume_result(extracted_resume,extracted_job)
+        user_name = predict_name(extracted_resume)    
 
+        db_result = model.ResumeResult(
+            name=user_name,
+            result_json=json.dumps(result) 
+        )
+        db.add(db_result)
+        db.commit()
+        db.refresh(db_result)
         return {
-            "result": result
+            "message": "Files uploaded and processed successfully",
+            "db_id": db_result.id,
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"File upload failed: {str(e)}")
