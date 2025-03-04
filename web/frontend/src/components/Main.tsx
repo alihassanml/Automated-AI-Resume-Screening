@@ -6,6 +6,7 @@ import { Modal } from "react-bootstrap";
 import Form from "react-bootstrap/Form";
 import { Spinner } from "react-bootstrap";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 
 
 
@@ -14,6 +15,8 @@ const Main = () => {
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
+  const navigate = useNavigate();
+  
 
 
   const [loading, setLoading] = useState(false);
@@ -73,9 +76,10 @@ const Main = () => {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setLoading(false);
-      alert(response.data);
-      console.log(response.data)
+      console.log(response.data.db_id)
       handleClose(); // Close modal after success
+      navigate("/result", { state: { id: response.data.db_id } });
+      
     } catch (error) {
       setLoading(false);
       alert("Error! Try Again.");

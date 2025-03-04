@@ -114,12 +114,12 @@ body{
 
 .result-resume{
     margin-top: 10%;
-    max-height: 400px;
-    min-height: 400px;
+    max-height: 450px;
+    min-height: 450px;
     background-color: rgb(250, 250, 250) ;
     padding-right: 20px;
+    color: black;
     border: 2px solid rgb(240, 240, 240) ;
-    overflow-y: scroll;
     border-radius: 10px;
 }
 
@@ -135,3 +135,10 @@ body{
     border-radius: 10px; /* Rounded corners */
     border: 2px solid rgb(255, 255, 255); /* Space around the scrollbar thumb */
   }
+
+.main-heading-2{
+    font-size: 30px;
+    margin-left: 30px;
+    color: rgb(76,109,240);
+    font-weight: bold;
+}

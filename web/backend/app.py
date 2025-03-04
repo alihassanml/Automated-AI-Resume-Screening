@@ -10,7 +10,6 @@ from fastapi.responses import JSONResponse
 import shutil
 import os   
 from PyPDF2 import PdfReader
-from predict import resume_result
 from flair.models import SequenceTagger
 from flair.data import Sentence
 import json
@@ -83,6 +82,8 @@ async def upload(
     job: UploadFile = File(...),  # Job file is optional
     db: Session = Depends(get_db)
 ):
+    from predict import resume_result
+    
     try:
         if not resume.filename.endswith(".pdf"):
             raise HTTPException(status_code=400, detail="Only PDF files are allowed for resume")
@@ -121,3 +122,17 @@ async def upload(
         }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"File upload failed: {str(e)}")
+    
+
+
+@app.get("/results/{id}")
+def get_result(id: int, db: Session = Depends(get_db)):
+    result = db.query(model.ResumeResult).filter(model.ResumeResult.id == id).first()
+    if not result:
+        raise HTTPException(status_code=404, detail="Result not found")
+    
+    return {
+        "id": result.id,
+        "name":result.name,
+        "result": json.loads(result.result_json)  # Convert back to JSON
+    }

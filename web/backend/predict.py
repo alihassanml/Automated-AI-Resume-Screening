@@ -72,7 +72,7 @@ def extract_education(text):
     
     return {
         "Degrees": extracted_degrees,
-        "Fields of Study": extracted_fields,
+        "Study": extracted_fields,
         "Institutions": extracted_institutions
     }
 
@@ -147,7 +147,7 @@ def predict(resume, job):
     score_skill, matched_skills = matching_score(resume_extract['skill'], job_extract['skill'])
     score_education, matched_education = matching_score(resume_extract['education'], job_extract['education'])
     score_experience, matched_experience = matching_score(resume_extract['experience'], job_extract['experience'])
-
+    
     # Find Similarity Using cosine
     similiraty_skill = get_ResumeSimilarity(str(resume), str(job))
     
