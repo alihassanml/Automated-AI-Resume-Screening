@@ -62,20 +62,36 @@ def delete_existing_files():
 
 
 @app.post("/upload")
-async def upload(file: UploadFile):
+async def upload(
+    resume: UploadFile = File(...), 
+    job: UploadFile = File(...)  # Job file is optional
+):
     try:
-        if not file.filename.endswith(".pdf"):
-            raise HTTPException(status_code=400, detail="Only PDF files are allowed")
-        
+        if not resume.filename.endswith(".pdf"):
+            raise HTTPException(status_code=400, detail="Only PDF files are allowed for resume")
 
-        delete_existing_files() # Delete exist file
-        file_location = os.path.join(UPLOAD_DIR, file.filename)
-        with open(file_location, "wb") as buffer:
-            shutil.copyfileobj(file.file, buffer)
-        
-        extracted_text = pdf_read(file_location)
-        result = resume_result(extracted_text)
-        
-        return result
+        # Validate job file if provided
+        if job and not job.filename.endswith(".pdf"):
+            raise HTTPException(status_code=400, detail="Only PDF files are allowed for job")
+
+        delete_existing_files()  # Delete existing files
+
+        resume_location = os.path.join(UPLOAD_DIR, resume.filename)
+        with open(resume_location, "wb") as buffer:
+            shutil.copyfileobj(resume.file, buffer)
+
+        job_location = os.path.join(UPLOAD_DIR, job.filename)
+        with open(job_location, "wb") as buffer:
+            shutil.copyfileobj(job.file, buffer)
+            
+        # Process the resume file
+        extracted_resume = pdf_read(resume_location)
+        extracted_job = pdf_read(job_location)
+
+        result = resume_result(extracted_resume,extracted_job)
+
+        return {
+            "result": result
+        }
     except Exception as e:
         raise HTTPException(status_code=500, detail=f"File upload failed: {str(e)}")

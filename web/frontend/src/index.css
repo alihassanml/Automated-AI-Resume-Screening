@@ -1,68 +1,137 @@
-:root {
-  font-family: Inter, system-ui, Avenir, Helvetica, Arial, sans-serif;
-  line-height: 1.5;
-  font-weight: 400;
+*{
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+body{
+    background-color: green;
+    font-family: ui-serif;
 
-  color-scheme: light dark;
-  color: rgba(255, 255, 255, 0.87);
-  background-color: #242424;
-
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
 }
-
-a {
-  font-weight: 500;
-  color: #646cff;
-  text-decoration: inherit;
+.main-1{
+    /* background-color: rgb(209, 5, 5); */
+    min-height: 90vh;
 }
-a:hover {
-  color: #535bf2;
+.fa-hive{
+    color: rgb(76,109,240);
 }
-
-body {
-  margin: 0;
-  display: flex;
-  place-items: center;
-  min-width: 320px;
-  min-height: 100vh;
+.main-navbar{
+    border-bottom: 1px solid rgb(240, 240, 240) !important;
 }
-
-h1 {
-  font-size: 3.2em;
-  line-height: 1.1;
+.main-navbar-brand{
+    color: rgb(76,109,240);
 }
-
-button {
-  border-radius: 8px;
-  border: 1px solid transparent;
-  padding: 0.6em 1.2em;
-  font-size: 1em;
-  font-weight: 500;
-  font-family: inherit;
-  background-color: #1a1a1a;
-  cursor: pointer;
-  transition: border-color 0.25s;
+.main-nav-button{
+    border-radius: 20px !important;
+    background-color: transparent !important;
+    color: black !important;
+    border: 2px solid rgb(76,109,240) !important;
+    width: 90px;
+    height: 40px;
 }
-button:hover {
-  border-color: #646cff;
-}
-button:focus,
-button:focus-visible {
-  outline: 4px auto -webkit-focus-ring-color;
+.main-nav-button-1{
+    border-radius: 20px !important;
+    width: 115px;
+    background-color: rgb(76,109,240) !important;
+    border-color: rgb(76,109,240) !important;
 }
 
-@media (prefers-color-scheme: light) {
-  :root {
-    color: #213547;
-    background-color: #ffffff;
+.main-nav-button-2{
+    border-radius: 25px !important;
+    width: 134px;
+    background-color: rgb(76,109,240) !important;
+    margin-left: 30px;
+    height: 45px;
+    border: none !important;
+    cursor: pointer;
+}
+.main-heading{
+    margin-top: 70px;
+    font-size: 55px;
+    margin-left: 30px;
+    color: rgb(76,109,240);
+    font-weight: bold;
+}
+.main-text{
+    margin-top: 30px;
+    margin-left: 30px;
+}
+.table-heading{
+    border-top: 1px solid rgb(218, 218, 218);
+    color: white !important;
+}
+.table-data{
+
+    border-right: 1px solid  rgb(218, 218, 218) !important;
+}
+.space-icon{
+    background-color: rgb(236, 235, 235);
+    list-style: none;
+    margin-top: 7%;
+    height: 15px;
+    color: transparent;
+}
+.table-heading-color{
+    background-color: rgb(236, 235, 235) !important;
+}
+
+.space-icon-1{
+    background-color: rgb(66, 212, 139);
+    border-radius: 20px;
+    list-style: none;
+    height: 12px;
+    margin-top: 7px;
+    color: transparent;
+}
+.space-icon-2{  
+    list-style: none;
+    /* height: 12px; */
+    min-width: 30px;
+    color: white;
+    margin-left: 10%;
+    margin-right: 10%;
+    background-color: rgb(76,109,240);
+}
+.modal-title{
+    font-size: 25px;    
+    text-align: center;
+    justify-content: center;
+    font-weight: bold !important;
+    padding-top: 20px;
+    padding-left: 10px;
+}
+.upload-button{
+    background-color: rgb(76,109,240) !important;
+    width: 130px;
+    /* border-radius: 23px !important; */
+    height: 45px;
+}
+.form-label{
+    font-size: 16px;
+    font-family: sans-serif;
+    color: rgb(121, 119, 119);
+}
+
+.result-resume{
+    margin-top: 10%;
+    max-height: 400px;
+    min-height: 400px;
+    background-color: rgb(250, 250, 250) ;
+    padding-right: 20px;
+    border: 2px solid rgb(240, 240, 240) ;
+    overflow-y: scroll;
+    border-radius: 10px;
+}
+
+::-webkit-scrollbar {
+    width: 0px; /* Width of the scrollbar */
   }
-  a:hover {
-    color: #747bff;
+  ::-webkit-scrollbar-track {
+    background: transparent; /* Background color of the scrollbar track */
   }
-  button {
-    background-color: #f9f9f9;
+  
+  ::-webkit-scrollbar-thumb {
+    background-color: transparent; /* Color of the scrollbar thumb */
+    border-radius: 10px; /* Rounded corners */
+    border: 2px solid rgb(255, 255, 255); /* Space around the scrollbar thumb */
   }
-}
