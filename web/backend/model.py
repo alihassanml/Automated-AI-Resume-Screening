@@ -8,3 +8,4 @@ class ResumeResult(Base):
     id = Column(Integer, primary_key=True, index=True)
     name = Column(String)
     result_json = Column(JSON, nullable=False)
+    rank = Column(String)

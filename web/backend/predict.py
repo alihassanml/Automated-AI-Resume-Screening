@@ -145,11 +145,12 @@ def predict(resume, job):
     job_extract = extract_Resume(clean_job)
     # Matching Resume Skill and Job's
     score_skill, matched_skills = matching_score(resume_extract['skill'], job_extract['skill'])
-    score_education, matched_education = matching_score(resume_extract['education'], job_extract['education'])
+    score_education, matched_education = matching_score(resume_extract['education']['Study'],job_extract['education']['Study'])
     score_experience, matched_experience = matching_score(resume_extract['experience'], job_extract['experience'])
     
     # Find Similarity Using cosine
     similiraty_skill = get_ResumeSimilarity(str(resume), str(job))
+    rank = ((score_skill + score_education)/200)*100
     
     # Fix the JSON serialization issue by converting sets to lists
     result = {
@@ -164,7 +165,8 @@ def predict(resume, job):
         "matched_education": list(matched_education),  # Convert set to list
         "job_experience_match_score": f"{score_experience:.2f}%",
         "matched_experience": list(matched_experience),  # Convert set to list
-        "job_resume_match_score": f"{similiraty_skill:.2f}%"
+        "job_resume_match_score": f"{similiraty_skill:.2f}%",
+        "resume_rank": f"{rank:.2f}%"
     }
 
     return result
