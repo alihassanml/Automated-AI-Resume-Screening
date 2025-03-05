@@ -2,6 +2,9 @@
 
 Automated AI Resume Screening is a web application that allows users to upload resumes and job descriptions in PDF format. The system processes these documents using AI and NLP techniques to extract skills, education, experience, and match resumes with job descriptions based on similarity scores.
 
+![Resume Screening Demo](frontend _image.png)
+
+
 ## Features
 - Upload resumes and job descriptions (PDF format)
 - Extract and analyze skills, education, and experience
