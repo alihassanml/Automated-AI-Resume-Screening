@@ -7,23 +7,15 @@ import Form from "react-bootstrap/Form";
 import { Spinner } from "react-bootstrap";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
-
-
-
 const Main = () => {
-
   const [show, setShow] = useState(false);
   const handleClose = () => setShow(false);
   const handleShow = () => setShow(true);
   const navigate = useNavigate();
-  
-
-
   const [loading, setLoading] = useState(false);
   const [uploadedFile, setUploadedFile] = useState(null);
   const [uploadedJob, setUploadedJob] = useState(null);
   const [useDefaultJob, setUseDefaultJob] = useState(false); // New state for default job
-
   // Handle resume file upload
   const handleFileChange = (e) => {
     const file = e.target.files[0];
@@ -34,7 +26,6 @@ const Main = () => {
       setUploadedFile(null);
     }
   };
-
   // Handle job file upload
   const handleFileJob = (e) => {
     const file = e.target.files[0];
@@ -45,13 +36,11 @@ const Main = () => {
       setUploadedJob(null);
     }
   };
-
   // Handle checkbox toggle
   const handleCheckboxChange = () => {
     setUseDefaultJob(!useDefaultJob);
     setUploadedJob(null); // Clear uploaded job if using default
   };
-
   // Handle file submission
   const handleSave = async () => {
     const formData = new FormData();
@@ -61,7 +50,6 @@ const Main = () => {
         const response = await fetch("/job.pdf"); // Path in 'public' folder
         const blob = await response.blob();
         const defaultFile = new File([blob], "job.pdf", { type: "application/pdf" });
-  
         formData.append("job", defaultFile);
       } catch (error) {
         alert("Error loading default job file!");
@@ -79,15 +67,11 @@ const Main = () => {
       console.log(response.data.db_id)
       handleClose(); // Close modal after success
       navigate("/result", { state: { id: response.data.db_id } });
-      
     } catch (error) {
       setLoading(false);
       alert("Error! Try Again.");
     }
   };
-
-
-
   return (
     <>
       <Navbar className=" main-navbar">
@@ -103,7 +87,6 @@ const Main = () => {
           </Navbar.Collapse>
         </Container>
       </Navbar>
-
       <Container fluid>
         <Row className="justify-content-center">
           <Col xs={12} sm={12} md={6} lg={6} className="p-4  text-left  main-1" style={{ border: "none !important" }}>
@@ -115,7 +98,6 @@ const Main = () => {
               automatically scans resumes, extracts relevant information, and matches
               candidates to job descriptions based on skill relevance</p>
             <Button onClick={handleShow} className="main-nav-button-2"><i className="fa-solid fa-rocket me-1"></i>Get a Demo</Button>
-
           </Col>
           <Col xs={12} sm={12} md={6} lg={6} className="p-4 text-center  main-1" style={{ border: "none !important" }}>
             <Table className="mt-5">
@@ -126,7 +108,6 @@ const Main = () => {
                   <td className="table-heading-color"> <li className="">Skill Score</li></td>
                   <td className="table-heading-color"> <li className="">Education </li></td>
                   <td className="table-heading-color"> <li className="">Predicting </li></td>
-
                 </tr>
                 <tr>
                   <td> <li className="space-icon">a</li></td>
@@ -134,7 +115,6 @@ const Main = () => {
                   <td> <li className="space-icon">a</li></td>
                   <td> <li className="space-icon-1">a</li></td>
                   <td> <li className="space-icon-2">Data Science</li></td>
-
                 </tr>
                 <tr>
                   <td> <li className="space-icon">a</li></td>
@@ -142,8 +122,6 @@ const Main = () => {
                   <td> <li className="space-icon">a</li></td>
                   <td> <li className="space-icon-1">a</li></td>
                   <td> <li className="space-icon-2">Data Science</li></td>
-
-
                 </tr>
                 <tr>
                   <td> <li className="space-icon">a</li></td>
@@ -151,7 +129,6 @@ const Main = () => {
                   <td> <li className="space-icon">a</li></td>
                   <td> <li className="space-icon-1">a</li></td>
                   <td> <li className="space-icon-2">HR</li></td>
-
                 </tr>
                 <tr>
                   <td> <li className="space-icon">a</li></td>
@@ -159,7 +136,6 @@ const Main = () => {
                   <td> <li className="space-icon">a</li></td>
                   <td> <li className="space-icon-1">a</li></td>
                   <td> <li className="space-icon-2">Hacking</li></td>
-
                 </tr>
                 <tr>
                   <td> <li className="space-icon">a</li></td>
@@ -167,7 +143,6 @@ const Main = () => {
                   <td> <li className="space-icon">a</li></td>
                   <td> <li className="space-icon-1">a</li></td>
                   <td> <li className="space-icon-2">HR</li></td>
-
                 </tr>
                 <tr>
                   <td> <li className="space-icon">a</li></td>
@@ -175,7 +150,6 @@ const Main = () => {
                   <td> <li className="space-icon">a</li></td>
                   <td> <li className="space-icon-1">a</li></td>
                   <td> <li className="space-icon-2">Java Dev</li></td>
-
                 </tr>
                 <tr>
                   <td> <li className="space-icon">a</li></td>
@@ -183,8 +157,6 @@ const Main = () => {
                   <td> <li className="space-icon">a</li></td>
                   <td> <li className="space-icon-1">a</li></td>
                   <td> <li className="space-icon-2">Python Dev</li></td>
-
-
                 </tr>
                 <tr>
                   <td> <li className="space-icon">a</li></td>
@@ -192,7 +164,6 @@ const Main = () => {
                   <td> <li className="space-icon">a</li></td>
                   <td> <li className="space-icon-1">a</li></td>
                   <td> <li className="space-icon-2">Machine Learning</li></td>
-
                 </tr>
                 <tr>
                   <td> <li className="space-icon">a</li></td>
@@ -200,8 +171,6 @@ const Main = () => {
                   <td> <li className="space-icon">a</li></td>
                   <td> <li className="space-icon-1">a</li></td>
                   <td> <li className="space-icon-2">Data Science</li></td>
-
-
                 </tr>
                 <tr>
                   <td> <li className="space-icon">a</li></td>
@@ -209,14 +178,12 @@ const Main = () => {
                   <td> <li className="space-icon">a</li></td>
                   <td> <li className="space-icon-1">a</li></td>
                   <td> <li className="space-icon-2">Data Science</li></td>
-
                 </tr>
               </tbody>
             </Table>
           </Col>
         </Row>
       </Container>
-
       <Modal show={show} onHide={handleClose} centered >
       <Modal.Header closeButton className="me-2 pt-3">
         <h1 className="modal-title">Upload Resume & Job</h1>
@@ -228,9 +195,6 @@ const Main = () => {
             <Form.Label>Upload Resume file</Form.Label>
             <Form.Control type="file" accept=".pdf" onChange={handleFileChange} />
           </Form.Group>
-
-          
-
           {/* Job Upload (Disabled if using Default Job) */}
           <Form.Group controlId="formFile" className="mt-4">
             <Form.Label className="form-label">Upload Job file</Form.Label>
@@ -241,8 +205,6 @@ const Main = () => {
               disabled={useDefaultJob}
             />
           </Form.Group>
-
-
           {/* Checkbox for Default Job */}
           <Form.Group controlId="defaultJobCheckbox" className="mt-3">
             <Form.Check
@@ -252,7 +214,6 @@ const Main = () => {
               onChange={handleCheckboxChange}
             />
           </Form.Group>
-
           {/* Upload Button */}
           <Button
             className="mt-3 upload-button"
@@ -271,5 +232,4 @@ const Main = () => {
     </>
   )
 }
-
 export default Main

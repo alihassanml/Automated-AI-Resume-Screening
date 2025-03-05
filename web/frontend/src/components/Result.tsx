@@ -1,20 +1,17 @@
 import Navbar from 'react-bootstrap/Navbar';
 import { useNavigate } from "react-router-dom";
-import { Container, Row, Col, Button } from "react-bootstrap";
+import { Container, Row, Col, Button, Accordion } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie } from "recharts";
 import { useLocation } from "react-router-dom";
-
-
 const Result = () => {
-
     const navigate = useNavigate();
     const location = useLocation();
-    const id = location.state?.id || null;
+    const id = location.state?.id || 1;
     const [data, setData] = useState(null);
     const [error, setError] = useState(null);
-
-
+    const [resumeData, setResumeData] = useState("");
+    const [jobData, setJobData] = useState("");
     const fetchResults = async () => {
         try {
             const response = await fetch(`http://127.0.0.1:8000/results/${id}`);
@@ -23,46 +20,35 @@ const Result = () => {
             }
             const result = await response.json();
             setData(result);
+            setResumeData(result.result.clean_resume)
+            setJobData(result.result.clean_job)
         } catch (err) {
             setError(err.message);
         }
     };
-
     useEffect(() => {
         fetchResults();
     }, [id]);
-
-
     const skillChart = data?.result?.matched_skills?.map((skill) => ({
         skill: skill,
         value: Math.floor(Math.random() * 100) + 10, // Generate random values for bars (replace this with actual data)
     }));
-
     const matchScore = data?.result?.job_skill_match_score
         ? parseFloat(data.result.job_skill_match_score.replace("%", ""))
         : null;
-
     const skillAccuracy = matchScore !== null ? [{ name: "Match Score", score: matchScore }] : [];
-    
     const educationChart = data?.result?.resume_skills?.education?.Study?.map((education) => ({
         education: education,
         value: Math.floor(Math.random() * 100) + 10, // Generate random values for bars (replace this with actual data)
     }));
-
     const educationScore = data?.result?.job_education_match_score
         ? parseFloat(data.result.job_education_match_score.replace("%", ""))
         : null;
-
     const jobAccuracy = educationScore !== null ? [{ name: "Match Score", score: educationScore }] : [];
-    
-
     const ResumeScore = data?.result?.job_resume_match_score
-    ? parseFloat(data.result.job_resume_match_score.replace("%", ""))
-    : null;
-
-const ResumeAccuracy = ResumeScore !== null ? [{ name: "Match Score", score: ResumeScore }] : [];
-
-
+        ? parseFloat(data.result.job_resume_match_score.replace("%", ""))
+        : null;
+    const ResumeAccuracy = ResumeScore !== null ? [{ name: "Match Score", score: ResumeScore }] : [];
     return (
         <>
             <Navbar className=" main-navbar">
@@ -78,19 +64,49 @@ const ResumeAccuracy = ResumeScore !== null ? [{ name: "Match Score", score: Res
                     </Navbar.Collapse>
                 </Container>
             </Navbar>
-
-
-
-
-
+            <Container fluid>
+                <Row className="justify-content-center">
+                    {/* Left Column - Resume Screening */}
+                    <Col xs={12} sm={12} md={6} lg={6} className="p-4 text-left">
+                        <div className="result-resume-1">
+                            <Accordion alwaysOpen defaultActiveKey={['0']}>
+                                <Accordion.Item eventKey="0">
+                                    <Accordion.Header className=''>
+                                        <h1 className="main-heading-2 ">Resume Screening</h1>
+                                    </Accordion.Header>
+                                    <Accordion.Body className='according-body'>
+                                        <p className="main-text">
+                                            {resumeData}
+                                        </p>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
+                        </div>
+                    </Col>
+                    {/* Right Column - Job Screening */}
+                    <Col xs={12} sm={12} md={6} lg={6} className="p-4 text-left">
+                        <div className="result-resume-1">
+                            <Accordion defaultActiveKey={['1']}>
+                                <Accordion.Item eventKey="1">
+                                    <Accordion.Header>
+                                        <h1 className="main-heading-2 ">Job Screening</h1>
+                                    </Accordion.Header>
+                                    <Accordion.Body className='according-body'>
+                                        <p className="main-text">
+                                            {jobData}
+                                        </p>
+                                    </Accordion.Body>
+                                </Accordion.Item>
+                            </Accordion>
+                        </div>
+                    </Col>
+                </Row>
+            </Container>
             {/* Skill Matching  */}
-
             <Container fluid>
                 <Row className="justify-content-center">
                     <Col xs={12} sm={12} md={6} lg={6} className="p-4   text-left  " style={{ border: "none !important" }}>
                         <div className='result-resume'>
-
-
                             <h1 className="main-heading-2 mt-4">Skill's Matched</h1>
                             <br />
                             {data && skillChart && (
@@ -103,8 +119,6 @@ const ResumeAccuracy = ResumeScore !== null ? [{ name: "Match Score", score: Res
                                     </BarChart>
                                 </ResponsiveContainer>
                             )}
-
-
                         </div>
                     </Col>
                     <Col xs={12} sm={12} md={6} lg={6} className="p-4 text-left" style={{ border: "none !important" }}>
@@ -127,18 +141,14 @@ const ResumeAccuracy = ResumeScore !== null ? [{ name: "Match Score", score: Res
                             ) : (
                                 <p>Loading chart...</p>
                             )}
-
                         </div>
                     </Col>
                 </Row>
             </Container>
-
             <Container fluid>
                 <Row className="justify-content-center">
                     <Col xs={12} sm={12} md={6} lg={6} className="p-4   text-left  " style={{ border: "none !important" }}>
                         <div className='result-resume'>
-
-
                             <h1 className="main-heading-2 mt-4">Education (Field of study)</h1>
                             <br />
                             {data && educationChart && (
@@ -151,8 +161,6 @@ const ResumeAccuracy = ResumeScore !== null ? [{ name: "Match Score", score: Res
                                     </BarChart>
                                 </ResponsiveContainer>
                             )}
-
-
                         </div>
                     </Col>
                     <Col xs={12} sm={12} md={6} lg={6} className="p-4 text-left" style={{ border: "none !important" }}>
@@ -160,7 +168,6 @@ const ResumeAccuracy = ResumeScore !== null ? [{ name: "Match Score", score: Res
                             <h1 className="main-heading-2 mt-3">Matching Score </h1>
                             <br />
                             <br />
-                            
                             {data && jobAccuracy.length > 0 ? (
                                 <ResponsiveContainer width="100%" height={300}>
                                     <PieChart>
@@ -176,22 +183,15 @@ const ResumeAccuracy = ResumeScore !== null ? [{ name: "Match Score", score: Res
                             ) : (
                                 <p>Loading chart...</p>
                             )}
-
-
                         </div>
                     </Col>
                 </Row>
             </Container>
-
             {/* <pre>{JSON.stringify(data.result.job_resume_match_score, null, 2)}</pre> */}
-
-
             <Container fluid>
                 <Row className="justify-content-center">
                     <Col xs={12} sm={12} md={6} lg={6} className="p-4   text-left  " style={{ border: "none !important" }}>
                         <div className='result-resume'>
-
-
                             <h1 className="main-heading-2 mt-4">Education (Field of study)</h1>
                             <br />
                             {data && educationChart && (
@@ -204,8 +204,6 @@ const ResumeAccuracy = ResumeScore !== null ? [{ name: "Match Score", score: Res
                                     </BarChart>
                                 </ResponsiveContainer>
                             )}
-
-
                         </div>
                     </Col>
                     <Col xs={12} sm={12} md={6} lg={6} className="p-4 text-left" style={{ border: "none !important" }}>
@@ -213,7 +211,6 @@ const ResumeAccuracy = ResumeScore !== null ? [{ name: "Match Score", score: Res
                             <h1 className="main-heading-2 mt-3">Matching Score </h1>
                             <br />
                             <br />
-                            
                             {data && ResumeAccuracy.length > 0 ? (
                                 <ResponsiveContainer width="100%" height={300}>
                                     <PieChart>
@@ -229,15 +226,11 @@ const ResumeAccuracy = ResumeScore !== null ? [{ name: "Match Score", score: Res
                             ) : (
                                 <p>Loading chart...</p>
                             )}
-
-
                         </div>
                     </Col>
                 </Row>
-            </Container>    
-
+            </Container>
         </>
     )
 }
-
 export default Result
