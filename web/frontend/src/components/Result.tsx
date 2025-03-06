@@ -192,7 +192,7 @@ const Result = () => {
                 <Row className="justify-content-center">
                     <Col xs={12} sm={12} md={6} lg={6} className="p-4   text-left  " style={{ border: "none !important" }}>
                         <div className='result-resume'>
-                            <h1 className="main-heading-2 mt-4">Education (Field of study)</h1>
+                            <h1 className="main-heading-2 mt-4">Experience </h1>
                             <br />
                             {data && educationChart && (
                                 <ResponsiveContainer width="100%" height={300}>

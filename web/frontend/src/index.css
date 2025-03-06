@@ -155,3 +155,6 @@ body{
 .according-body{
     min-height: 400px !important;
 }
+.space-icon-3{
+    border-right: 1px solid rgb(224, 223, 223);
+}

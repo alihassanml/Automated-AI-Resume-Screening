@@ -82,7 +82,7 @@ const Main = () => {
           </Navbar.Brand>
           <Navbar.Toggle />
           <Navbar.Collapse className="justify-content-end">
-            <Button className="me-1 main-nav-button">Login</Button>
+            <Button className="me-1 main-nav-button" onClick={() => navigate("/home")}>Results</Button>
             <Button className="main-nav-button-1" onClick={handleShow}>Get a Demo</Button>
           </Navbar.Collapse>
         </Container>

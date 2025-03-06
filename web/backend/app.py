@@ -137,3 +137,9 @@ def get_result(id: int, db: Session = Depends(get_db)):
         "name":result.name,
         "result": json.loads(result.result_json)  # Convert back to JSON
     }
+
+
+@app.get("/all_result")
+def all_result(db: Session = Depends(get_db)):
+    result = db.query(model.ResumeResult).all()
+    return result
