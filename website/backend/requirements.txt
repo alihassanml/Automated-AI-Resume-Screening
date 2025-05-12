@@ -1,0 +1,10 @@
+fastapi 
+uvicorn 
+httpx 
+pytest
+SQLAlchemy
+pydantic
+python-multipart
+PyPDF2
+flair
+torch

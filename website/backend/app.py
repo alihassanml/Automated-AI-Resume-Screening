@@ -107,10 +107,10 @@ async def upload(
         extracted_job = pdf_read(job_location)
 
         result = resume_result(extracted_resume,extracted_job)
-        user_name = predict_name(extracted_resume) 
+        # user_name = predict_name(extracted_resume) 
 
         db_result = model.ResumeResult(
-            name=user_name,
+            name="ali hassan",
             result_json=json.dumps(result),
             rank = result['resume_rank']
         )
