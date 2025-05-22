@@ -1,5 +1,3 @@
-# Documentation https://chatgpt.com/canvas/shared/67b700246dc08191b1ade2b2d75c3aa4
-
 spacy
 transformers
 pandas
