@@ -9,11 +9,13 @@ from fastapi import FastAPI, File, UploadFile, Form
 from fastapi.responses import JSONResponse
 import shutil
 import os   
+import re
 from PyPDF2 import PdfReader
 from flair.models import SequenceTagger
 from flair.data import Sentence
 import json
-
+from email_letter import send_job_offer_email
+import threading
 import warnings
 warnings.filterwarnings('ignore')
 
@@ -107,7 +109,13 @@ async def upload(
         extracted_job = pdf_read(job_location)
 
         result = resume_result(extracted_resume,extracted_job)
-        # user_name = predict_name(extracted_resume) 
+        if float(result['resume_rank'].replace('%', '')) >= 50:
+            user_name = predict_name(extracted_resume) 
+            email_pattern = r'[a-zA-Z0-9_.+-]+@'
+            emails = re.findall(email_pattern, extracted_resume)
+            emails =  f'{emails[0]}gmail.com'
+            thread = threading.Thread(target=send_job_offer_email(emails,user_name,result['resume_related_to']))
+            thread.start()
 
         db_result = model.ResumeResult(
             name="ali hassan",

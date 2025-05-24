@@ -3,7 +3,8 @@ from fastapi import HTTPException
 import smtplib
 from email.message import EmailMessage
 
-def send_job_offer_email(user_email, user_name, position, offer_code):
+def send_job_offer_email(user_email, user_name, position):
+    offer_code  = '112134145'
     email_address = 'noreply.kontactly@gmail.com'
     email_password = 'okauihsgyuywftcn'
 
