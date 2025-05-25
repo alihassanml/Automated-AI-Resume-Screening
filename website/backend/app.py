@@ -114,8 +114,7 @@ async def upload(
             email_pattern = r'[a-zA-Z0-9_.+-]+@'
             emails = re.findall(email_pattern, extracted_resume)
             emails =  f'{emails[0]}gmail.com'
-            thread = threading.Thread(target=send_job_offer_email(emails,user_name,result['resume_related_to']))
-            thread.start()
+            send_job_offer_email(emails,user_name,result['resume_related_to'])
 
         db_result = model.ResumeResult(
             name="ali hassan",
@@ -151,3 +150,73 @@ def get_result(id: int, db: Session = Depends(get_db)):
 def all_result(db: Session = Depends(get_db)):
     result = db.query(model.ResumeResult).all()
     return result
+
+
+
+@app.post("/batch_predict")
+def batch_predict( 
+    db: Session = Depends(get_db)
+):
+    from predict import resume_result
+
+    BATCH_DIR = os.path.join(UPLOAD_DIR, "batch")
+    os.makedirs(BATCH_DIR, exist_ok=True)
+    job = './job.pdf'
+
+    results = []
+    try:
+        if not job.filename.endswith(".pdf"):
+            raise HTTPException(status_code=400, detail="Only PDF files allowed for job")
+
+        # Save the job file
+        job_path = os.path.join(BATCH_DIR, job.filename)
+        with open(job_path, "wb") as buffer:
+            shutil.copyfileobj(job.file, buffer)
+
+        extracted_job = pdf_read(job_path)
+
+        # Process each CV in the batch folder
+        for file_name in os.listdir(BATCH_DIR):
+            if file_name.endswith(".pdf") and file_name != job.filename:
+                try:
+                    cv_path = os.path.join(BATCH_DIR, file_name)
+                    extracted_resume = pdf_read(cv_path)
+                    result = resume_result(extracted_resume, extracted_job)
+
+                    user_name = predict_name(extracted_resume)
+                    email_pattern = r'[a-zA-Z0-9_.+-]+@'
+                    emails = re.findall(email_pattern, extracted_resume)
+                    emails = f'{emails[0]}gmail.com' if emails else 'unknown@gmail.com'
+
+                    # Send email only if rank >= 50
+                    if float(result['resume_rank'].replace('%', '')) >= 50:
+                        send_job_offer_email(emails, user_name, result['resume_related_to'])
+
+                    # Save to DB
+                    db_result = model.ResumeResult(
+                        name=user_name or "unknown",
+                        result_json=json.dumps(result),
+                        rank=result['resume_rank']
+                    )
+                    db.add(db_result)
+                    db.commit()
+                    db.refresh(db_result)
+
+                    results.append({
+                        "cv": file_name,
+                        "rank": result['resume_rank'],
+                        "db_id": db_result.id
+                    })
+                except Exception as e:
+                    results.append({
+                        "cv": file_name,
+                        "error": str(e)
+                    })
+
+        return {
+            "message": "Batch processing complete",
+            "results": results
+        }
+
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Batch prediction failed: {str(e)}")
