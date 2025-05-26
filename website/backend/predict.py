@@ -15,18 +15,18 @@ from sentence_transformers import SentenceTransformer
 
 import pickle
 # load skill
-with open("../../list/skills.pkl", "rb") as f:
+with open("./list/skills.pkl", "rb") as f:
     skills = pickle.load(f)
 # load education    
-with open("../../list/education.pkl", "rb") as f:
+with open("./list/education.pkl", "rb") as f:
     education = pickle.load(f)
 # load experience
-with open("../../list/experience.pkl", "rb") as f:
+with open("./list/experience.pkl", "rb") as f:
     experience = pickle.load(f)
 
 # Load the trained classifier
-classfier_predict = pickle.load(open('../../list/classfier.pkl', 'rb'))
-tdiff_vector = pickle.load(open('../../list/tdif.pkl', 'rb'))
+classfier_predict = pickle.load(open('./list/classfier.pkl', 'rb'))
+tdiff_vector = pickle.load(open('./list/tdif.pkl', 'rb'))
 
 # load model
 model = SentenceTransformer("all-MiniLM-L6-v2")
