@@ -2,7 +2,8 @@ import Navbar from 'react-bootstrap/Navbar';
 import { useNavigate } from "react-router-dom";
 import { Container, Row, Col, Button, Accordion } from "react-bootstrap";
 import { useState, useEffect } from "react";
-import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie } from "recharts";
+import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, PieChart, Pie, Cell } from "recharts";
+
 import { useLocation } from "react-router-dom";
 const Result = () => {
     const navigate = useNavigate();
@@ -49,6 +50,39 @@ const Result = () => {
         ? parseFloat(data.result.job_resume_match_score.replace("%", ""))
         : null;
     const ResumeAccuracy = ResumeScore !== null ? [{ name: "Match Score", score: ResumeScore }] : [];
+
+    const colors = ['#ADD8E6', '#87CEFA', '#00BFFF', '#1E90FF', '#4682B4'];
+    const getColor = (index) => colors[index % colors.length];
+
+    const lightColors = ['#AED6F1', '#A9DFBF', '#F9E79F', '#F5B7B1', '#D7BDE2'];
+    const getLightColor = (index) => lightColors[index % lightColors.length];
+
+
+    function formatResumeText(text: string) {
+    const lines = text.split('\n').map(line => line.trim()).filter(Boolean);
+    const sections: { [key: string]: string[] } = {};
+
+    let currentSection = 'General';
+    lines.forEach(line => {
+        if (/education/i.test(line)) currentSection = 'Education';
+        else if (/experience|professional/i.test(line)) currentSection = 'Experience';
+        else if (/skills?/i.test(line)) currentSection = 'Skills';
+        else if (/projects?/i.test(line)) currentSection = 'Projects';
+        else if (/summary/i.test(line)) currentSection = 'Summary';
+        else if (/contact/i.test(line)) currentSection = 'Contact';
+
+        if (!sections[currentSection]) sections[currentSection] = [];
+        sections[currentSection].push(line);
+    });
+
+    return sections;
+    }
+
+    const formattedResume = formatResumeText(resumeData);
+
+
+
+
     return (
         <>
             <Navbar className=" main-navbar">
@@ -74,11 +108,19 @@ const Result = () => {
                                     <Accordion.Header className=''>
                                         <h1 className="main-heading-2 ">Resume Screening</h1>
                                     </Accordion.Header>
-                                    <Accordion.Body className='according-body'>
-                                        <p className="main-text">
-                                            {resumeData}
-                                        </p>
-                                    </Accordion.Body>
+                                    <Accordion.Body className="according-body resume-text">
+                                        {Object.entries(formattedResume).map(([section, content], idx) => (
+                                            <div key={idx}>
+                                            <h2 className="section-heading">📌 {section}</h2>
+                                            <ul>
+                                                {content.map((line, i) => (
+                                                <li key={i}>{line}</li>
+                                                ))}
+                                            </ul>
+                                            </div>
+                                        ))}
+                                        </Accordion.Body>
+
                                 </Accordion.Item>
                             </Accordion>
                         </div>
@@ -115,10 +157,16 @@ const Result = () => {
                                         <XAxis dataKey="skill" />
                                         <YAxis />
                                         <Tooltip />
-                                        <Bar dataKey="value" fill="#007bff" />
+                                        <Bar dataKey="value" barSize={70}>
+                                            {skillChart.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={getLightColor(index)} />
+                                            ))}
+                                        </Bar>
                                     </BarChart>
                                 </ResponsiveContainer>
                             )}
+
+
                         </div>
                     </Col>
                     <Col xs={12} sm={12} md={6} lg={6} className="p-4 text-left" style={{ border: "none !important" }}>
@@ -129,11 +177,29 @@ const Result = () => {
                             {data && skillAccuracy.length > 0 ? (
                                 <ResponsiveContainer width="100%" height={300}>
                                     <PieChart>
-                                        <Pie data={skillAccuracy} dataKey="score" startAngle={180} endAngle={0}
-                                            cx="50%" cy="90%" innerRadius="70%" outerRadius="100%" fill="#007bff" />
+                                        <Pie
+                                            data={skillAccuracy}
+                                            dataKey="score"
+                                            startAngle={180}
+                                            endAngle={0}
+                                            cx="50%"
+                                            cy="90%"
+                                            innerRadius="70%"
+                                            outerRadius="100%"
+                                        >
+                                            {skillAccuracy.map((entry, index) => (
+                                                <Cell key={`cell-pie-${index}`} fill={getLightColor(index)} />
+                                            ))}
+                                        </Pie>
                                         <Tooltip />
-                                        {/* Default value display */}
-                                        <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fontSize={24} fill="#FFFFFF">
+                                        <text
+                                            x="50%"
+                                            y="50%"
+                                            textAnchor="middle"
+                                            dominantBaseline="middle"
+                                            fontSize={24}
+                                            fill="#000000"
+                                        >
                                             {skillAccuracy[0].score}%
                                         </text>
                                     </PieChart>
@@ -141,6 +207,7 @@ const Result = () => {
                             ) : (
                                 <p>Loading chart...</p>
                             )}
+
                         </div>
                     </Col>
                 </Row>
@@ -154,13 +221,18 @@ const Result = () => {
                             {data && educationChart && (
                                 <ResponsiveContainer width="100%" height={300}>
                                     <BarChart data={educationChart}>
-                                        <XAxis dataKey="education" />
+                                        <XAxis dataKey="education" tickFormatter={(value) => value.length > 10 ? value.slice(0, 10) + '…' : value} />
                                         <YAxis />
                                         <Tooltip />
-                                        <Bar dataKey="value" fill="#007bff" />
+                                        <Bar dataKey="value" barSize={70}>
+                                            {educationChart.map((entry, index) => (
+                                                <Cell key={`cell-edu-${index}`} fill={getLightColor(index)} />
+                                            ))}
+                                        </Bar>
                                     </BarChart>
                                 </ResponsiveContainer>
                             )}
+
                         </div>
                     </Col>
                     <Col xs={12} sm={12} md={6} lg={6} className="p-4 text-left" style={{ border: "none !important" }}>
@@ -171,11 +243,26 @@ const Result = () => {
                             {data && jobAccuracy.length > 0 ? (
                                 <ResponsiveContainer width="100%" height={300}>
                                     <PieChart>
-                                        <Pie data={jobAccuracy} dataKey="score" startAngle={180} endAngle={0}
-                                            cx="50%" cy="90%" innerRadius="70%" outerRadius="100%" fill="#007bff" />
+                                        <Pie
+                                            data={jobAccuracy}
+                                            dataKey="score"
+                                            startAngle={180}
+                                            endAngle={0}
+                                            cx="50%"
+                                            cy="90%"
+                                            innerRadius="70%"
+                                            outerRadius="100%"
+                                            fill="#AED6F1" // light blue
+                                        />
                                         <Tooltip />
-                                        {/* Default value display */}
-                                        <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fontSize={24} fill="#FFFFFF">
+                                        <text
+                                            x="50%"
+                                            y="50%"
+                                            textAnchor="middle"
+                                            dominantBaseline="middle"
+                                            fontSize={24}
+                                            fill="#000000"
+                                        >
                                             {jobAccuracy[0].score}%
                                         </text>
                                     </PieChart>
@@ -183,6 +270,7 @@ const Result = () => {
                             ) : (
                                 <p>Loading chart...</p>
                             )}
+
                         </div>
                     </Col>
                 </Row>
@@ -197,10 +285,14 @@ const Result = () => {
                             {data && educationChart && (
                                 <ResponsiveContainer width="100%" height={300}>
                                     <BarChart data={educationChart}>
-                                        <XAxis dataKey="education" />
+                                        <XAxis dataKey="education" tickFormatter={(value) => value.length > 10 ? value.slice(0, 10) + '…' : value} />
                                         <YAxis />
                                         <Tooltip />
-                                        <Bar dataKey="value" fill="#007bff" />
+                                        <Bar dataKey="value" barSize={70} >
+                                            {educationChart.map((entry, index) => (
+                                                <Cell key={`cell-${index}`} fill={colors[index % colors.length]} />
+                                            ))}
+                                        </Bar>
                                     </BarChart>
                                 </ResponsiveContainer>
                             )}
@@ -214,11 +306,26 @@ const Result = () => {
                             {data && ResumeAccuracy.length > 0 ? (
                                 <ResponsiveContainer width="100%" height={300}>
                                     <PieChart>
-                                        <Pie data={ResumeAccuracy} dataKey="score" startAngle={180} endAngle={0}
-                                            cx="50%" cy="90%" innerRadius="70%" outerRadius="100%" fill="#007bff" />
+                                        <Pie
+                                            data={ResumeAccuracy}
+                                            dataKey="score"
+                                            startAngle={180}
+                                            endAngle={0}
+                                            cx="50%"
+                                            cy="90%"
+                                            innerRadius="70%"
+                                            outerRadius="100%"
+                                            fill="#ADD8E6" // light blue
+                                        />
                                         <Tooltip />
-                                        {/* Default value display */}
-                                        <text x="50%" y="50%" textAnchor="middle" dominantBaseline="middle" fontSize={24} fill="#FFFFFF">
+                                        <text
+                                            x="50%"
+                                            y="50%"
+                                            textAnchor="middle"
+                                            dominantBaseline="middle"
+                                            fontSize={24}
+                                            fill="#FFFFFF"
+                                        >
                                             {ResumeAccuracy[0].score}%
                                         </text>
                                     </PieChart>
@@ -226,6 +333,7 @@ const Result = () => {
                             ) : (
                                 <p>Loading chart...</p>
                             )}
+
                         </div>
                     </Col>
                 </Row>
