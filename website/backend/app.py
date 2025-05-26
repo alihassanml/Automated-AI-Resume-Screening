@@ -26,17 +26,16 @@ tagger = SequenceTagger.load("ner")
 
 
 # adding Cors url
-origins = [
-    'http://localhost:5173'
-]
+from fastapi.middleware.cors import CORSMiddleware
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=origins,
+    allow_origins=["*"],  # ✅ allow all origins
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
 
 
 
