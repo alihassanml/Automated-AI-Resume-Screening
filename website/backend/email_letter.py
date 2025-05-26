@@ -1,17 +1,15 @@
-import os
-from fastapi import HTTPException
 import smtplib
 from email.message import EmailMessage
 
 def send_job_offer_email(user_email, user_name, position):
-    offer_code  = '112134145'
+    offer_code = 'ZAALIMA2025'
     email_address = 'noreply.kontactly@gmail.com'
     email_password = 'okauihsgyuywftcn'
 
     msg = EmailMessage()
     msg['From'] = email_address
     msg['To'] = user_email
-    msg['Subject'] = f"🎉 You're Hired! Offer Letter for {position} at Kontactly"
+    msg['Subject'] = f"🎉 Internship Offer for {position} at Zaalima Development Pvt Ltd"
 
     html_content = f"""
     <!DOCTYPE html>
@@ -19,87 +17,79 @@ def send_job_offer_email(user_email, user_name, position):
     <head>
         <meta charset="UTF-8">
         <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Job Offer - Kontactly</title>
+        <title>Internship Offer</title>
+        <link href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;600&display=swap" rel="stylesheet">
         <style>
             body {{
-                font-family: Arial, sans-serif;
-                background-color: #f9f9f9;
-                padding: 30px;
+                font-family: 'Open Sans', sans-serif;
+                background-color: #f4f6fc;
+                padding: 40px;
+                color: #333;
             }}
             .container {{
-                max-width: 640px;
+                max-width: 680px;
                 margin: auto;
                 background: #ffffff;
-                border-radius: 10px;
-                padding: 25px;
-                box-shadow: 0 0 15px rgba(0,0,0,0.1);
+                border-radius: 12px;
+                padding: 35px;
+                box-shadow: 0 15px 40px rgba(0,0,0,0.08);
             }}
             .header img {{
-                max-width: 100%;
-                height: auto;
+                max-width: 180px;
+                display: block;
+                margin: 0 auto 20px;
                 border-radius: 8px;
             }}
             h2 {{
-                color: #2c5268;
-                margin-top: 20px;
                 text-align: center;
+                color: #2e3c62;
             }}
-            p {{
-                color: #333;
-                font-size: 16px;
-                line-height: 1.5;
+            .highlight {{
+                color: #4a6cf7;
+                font-weight: 600;
             }}
             .offer-code {{
-                background: #2c5268;
+                background-color: #4a6cf7;
                 color: white;
-                padding: 15px;
-                font-size: 24px;
                 text-align: center;
-                border-radius: 8px;
-                margin: 20px 0;
-                letter-spacing: 1px;
+                font-size: 20px;
+                padding: 12px;
+                margin: 25px 0;
+                border-radius: 10px;
+                letter-spacing: 1.5px;
             }}
-            .signature {{
-                margin-top: 30px;
+            .footer {{
+                margin-top: 40px;
                 font-size: 14px;
-                color: #555;
+                color: #666;
+                text-align: center;
             }}
             a {{
-                color: #2c5268;
+                color: #4a6cf7;
                 text-decoration: none;
-            }}
-            .social-icons img {{
-                width: 22px;
-                margin-right: 10px;
             }}
         </style>
     </head>
     <body>
         <div class="container">
             <div class="header">
-                <img src="https://datahorsedata.s3.us-east-1.amazonaws.com/Kontantly+email+image.png" alt="Kontactly">
+                <img src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcShBXrit93d6xvAL7Z9R-H7v_ZoExI1bkg19g&s" alt="Zaalima Logo">
             </div>
-            <h2>Congratulations, {user_name}!</h2>
-            <p>We are thrilled to offer you the position of <strong>{position}</strong> at <strong>Kontactly</strong>. After reviewing your qualifications and speaking with you, we're confident that you'll be a fantastic addition to our team.</p>
-            <p>To accept this offer and access your official offer letter, please use the code below:</p>
+            <h2>Dear {user_name},</h2>
+            <p>We are pleased to offer you an <strong>Internship</strong> position at <strong>Zaalima Development Pvt Ltd</strong> as a <span class="highlight">{position}</span>.</p>
+            <p>After reviewing your profile and interview performance, we believe your skills align well with our current projects in AI and data science. Below are the internship details:</p>
+            <ul>
+                <li><strong>Duration:</strong> 25 May 2025 – 25 July 2025</li>
+                <li><strong>Location:</strong> Remote</li>
+                <li><strong>Stipend:</strong> Up to ₹5,000/month (performance-based)</li>
+            </ul>
+            <p>Please use the code below to access and accept your offer letter:</p>
             <div class="offer-code">{offer_code}</div>
-            <p>If you have any questions, feel free to reply to this email or reach out to our support team.</p>
-            <div class="signature">
-                Cheers,<br>
-                <strong>The Kontactly Team</strong><br>
-                Phone: <a href="tel:+32474171274">+32 474 17 12 74</a><br>
-                Email: <a href="mailto:support@kontactly.ai">support@kontactly.ai</a>
-            </div>
-            <div class="social-icons">
-                <a href="https://kontactly.ai/" target="_blank">
-                    <img src="https://datahorsedata.s3.us-east-1.amazonaws.com/kontantly_icon.png" alt="Website">
-                </a>
-                <a href="https://www.linkedin.com/showcase/kontactly-ai" target="_blank">
-                    <img src="https://datahorsedata.s3.us-east-1.amazonaws.com/Linkedin_icon+(1).png" alt="LinkedIn">
-                </a>
-                <a href="https://github.com/DeDolphins/Kontactly" target="_blank">
-                    <img src="https://datahorsedata.s3.us-east-1.amazonaws.com/Github_icon.png" alt="GitHub">
-                </a>
+            <p>If you have questions, reach out to our team at <a href="mailto:support@zaalima.tech">support@zaalima.tech</a>.</p>
+            <div class="footer">
+                Sincerely,<br>
+                <strong>Zaalima Development Pvt Ltd HR Team</strong><br>
+                <a href="http://www.zaalima.in" target="_blank">www.zaalima.in</a> | 📞 +91-82770-35909
             </div>
         </div>
     </body>
@@ -112,4 +102,6 @@ def send_job_offer_email(user_email, user_name, position):
         smtp.login(email_address, email_password)
         smtp.send_message(msg)
 
-    return {'Message': 'Job offer email sent successfully'}
+    return {'Message': 'Stylish internship offer email sent successfully'}
+
+

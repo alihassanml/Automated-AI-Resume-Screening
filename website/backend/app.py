@@ -108,15 +108,21 @@ async def upload(
         extracted_job = pdf_read(job_location)
 
         result = resume_result(extracted_resume,extracted_job)
+        print('------Getting Result---------------')
+        user_name = predict_name(extracted_resume) 
+        print('------Getting Name---------------')
+
+
         if float(result['resume_rank'].replace('%', '')) >= 50:
-            user_name = predict_name(extracted_resume) 
+            print('------Sending Email ---------------')
             email_pattern = r'[a-zA-Z0-9_.+-]+@'
             emails = re.findall(email_pattern, extracted_resume)
-            emails =  f'{emails[0]}gmail.com'
+            emails = f'{emails[0]}gmail.com' if emails else 'unknown@gmail.com'
             send_job_offer_email(emails,user_name,result['resume_related_to'])
+            print('------Sending Done ---------------')
 
         db_result = model.ResumeResult(
-            name="ali hassan",
+            name=user_name,
             result_json=json.dumps(result),
             rank = result['resume_rank']
         )

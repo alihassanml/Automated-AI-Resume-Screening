@@ -61,7 +61,7 @@ const Main = () => {
     try {
       setLoading(true);
       const response = await axios.post(
-  "https://cafd-103-125-177-86.ngrok-free.app/upload",
+  "http://127.0.0.1:8000/upload",
   formData,
   {
     headers: {

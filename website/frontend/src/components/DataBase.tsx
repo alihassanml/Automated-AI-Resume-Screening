@@ -11,7 +11,7 @@ const DataBase = () => {
     const [results, setResults] = useState([]);
 
    useEffect(() => {
-    fetch("https://cafd-103-125-177-86.ngrok-free.app/all_result", {
+    fetch("http://127.0.0.1:8000/all_result", {
         method: "GET",
         headers: {
             "ngrok-skip-browser-warning": "true",
@@ -91,7 +91,7 @@ const DataBase = () => {
                                                     <div className="relative w-full bg-gray-200 rounded-md h-3">
                                                         <div
                                                             className="bg-dark-500  rounded-md text-center text-white text-xs"
-                                                            style={{ width: `${rankPercentage}%`, backgroundColor: " rgb(42, 163, 102)", color: "white", borderRadius: "20px", height: "20px" }}
+                                                            style={{ backgroundColor: " rgb(42, 163, 102)", color: "white", borderRadius: "20px", height: "20px", }}
                                                         >
                                                             {result.rank}
                                                         </div>
