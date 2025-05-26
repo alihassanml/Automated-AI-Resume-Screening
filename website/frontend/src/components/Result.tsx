@@ -15,7 +15,7 @@ const Result = () => {
     const [jobData, setJobData] = useState("");
     const fetchResults = async () => {
         try {
-            const response = await fetch(`http://127.0.0.1:8000/results/${id}`);
+            const response = await fetch(`https://eb66-103-125-177-86.ngrok-free.app/results/${id}`);
             if (!response.ok) {
                 throw new Error(`HTTP error! Status: ${response.status}`);
             }

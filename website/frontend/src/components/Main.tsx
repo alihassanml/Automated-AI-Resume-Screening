@@ -60,7 +60,7 @@ const Main = () => {
     }
     try {
       setLoading(true);
-      const response = await axios.post("http://127.0.0.1:8000/upload", formData, {
+      const response = await axios.post("https://eb66-103-125-177-86.ngrok-free.app/upload", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
       setLoading(false);
