@@ -7,7 +7,6 @@ pydantic
 python-multipart
 PyPDF2
 flair
-torch
 spacy
 transformers
 pandas
