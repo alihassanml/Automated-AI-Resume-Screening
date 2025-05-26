@@ -14,19 +14,28 @@ const Result = () => {
     const [resumeData, setResumeData] = useState("");
     const [jobData, setJobData] = useState("");
     const fetchResults = async () => {
-        try {
-            const response = await fetch(`https://eb66-103-125-177-86.ngrok-free.app/results/${id}`);
-            if (!response.ok) {
-                throw new Error(`HTTP error! Status: ${response.status}`);
+    try {
+        const response = await fetch(`https://cafd-103-125-177-86.ngrok-free.app/results/${id}`, {
+            method: "GET",
+            headers: {
+                "ngrok-skip-browser-warning": "true",
+                "Content-Type": "application/json"
             }
-            const result = await response.json();
-            setData(result);
-            setResumeData(result.result.clean_resume)
-            setJobData(result.result.clean_job)
-        } catch (err) {
-            setError(err.message);
+        });
+
+        if (!response.ok) {
+            throw new Error(`HTTP error! Status: ${response.status}`);
         }
-    };
+
+        const result = await response.json();
+        setData(result);
+        setResumeData(result.result.clean_resume);
+        setJobData(result.result.clean_job);
+    } catch (err) {
+        setError(err.message);
+    }
+};
+
     useEffect(() => {
         fetchResults();
     }, [id]);

@@ -10,21 +10,28 @@ const DataBase = () => {
 
     const [results, setResults] = useState([]);
 
-    useEffect(() => {
-        fetch("http://localhost:8000/all_result")
-            .then((response) => {
-                if (!response.ok) {
-                    throw new Error("Failed to fetch results");
-                }
-                return response.json();
-            })
-            .then((data) => {
-                setResults(data);
-            })
-            .catch((err) => {
-                alert(err.message);
-            });
-    }, []);
+   useEffect(() => {
+    fetch("https://cafd-103-125-177-86.ngrok-free.app/all_result", {
+        method: "GET",
+        headers: {
+            "ngrok-skip-browser-warning": "true",
+            "Content-Type": "application/json"
+        }
+    })
+        .then((response) => {
+            if (!response.ok) {
+                throw new Error("Failed to fetch results");
+            }
+            return response.json();
+        })
+        .then((data) => {
+            setResults(data);
+        })
+        .catch((err) => {
+            alert(err.message);
+        });
+}, []);
+
 
 
 

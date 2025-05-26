@@ -60,9 +60,17 @@ const Main = () => {
     }
     try {
       setLoading(true);
-      const response = await axios.post("https://eb66-103-125-177-86.ngrok-free.app/upload", formData, {
-        headers: { "Content-Type": "multipart/form-data" },
-      });
+      const response = await axios.post(
+  "https://cafd-103-125-177-86.ngrok-free.app/upload",
+  formData,
+  {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      "ngrok-skip-browser-warning": "true"
+    }
+  }
+);
+
       setLoading(false);
       console.log(response.data.db_id)
       handleClose(); // Close modal after success
