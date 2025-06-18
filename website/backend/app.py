@@ -19,6 +19,9 @@ import threading
 import warnings
 warnings.filterwarnings('ignore')
 
+from deep_translator import GoogleTranslator
+from deep_translator import single_detection
+
 
 app = FastAPI()
 model.Base.metadata.create_all(bind=engine)
@@ -74,6 +77,10 @@ def predict_name(text):
     for entity in sentence.get_spans("ner"):
         if entity.tag == "PER":  # PER = Person
             return entity.text
+        
+def language_detector(text):
+    lang = single_detection(text, api_key='d976110bbdcfff622131eebb11c72f51')
+    return lang
 
 
 
@@ -106,6 +113,11 @@ async def upload(
         # Process the resume file
         extracted_resume = pdf_read(resume_location)
         extracted_job = pdf_read(job_location)
+        detect = language_detector(extracted_resume)
+        if detect == 'en':
+            pass
+        else:
+            extracted_resume = GoogleTranslator(source='auto', target='en').translate(extracted_resume)  # output -> Weiter so, du bist großartig
 
         result = resume_result(extracted_resume,extracted_job)
         print('------Getting Result---------------')
